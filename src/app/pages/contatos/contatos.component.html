@@ -1,0 +1,63 @@
+<div>
+    <h1 class="˜w-100 text-center">Contatos</h1><br>
+    <form class="mx-auto my-4 col-6 " [formGroup]="formContact" (ngSubmit)="save()" *ngIf="loading">
+        <label class="form-label">Nome Completo</label>
+        <input class="form-control {{ (controls.name.errors && controls.name.touched ) ? 'border-danger ' : '' }}" 
+        [formControl]="controls.name"
+        
+        pattern="^([A-ZÀ-Ú][a-zà-ú]*)(\s[A-ZÀ-Ú][a-zà-ú]*)+$" 
+        >
+        <div class="text-xs text-rose-700 mt-2" *ngIf="controls.name.errors && controls.name.touched">  
+            <div *ngIf="controls.name.getError('required')">Nome é obrigatório!</div>
+            <div *ngIf="controls.name.getError('pattern')">Nome e Sobrenome devem começar com letra Maiúscula</div>
+        </div>
+        <label class="form-label">Telefone</label>
+        <input class="form-control {{ (controls.phone.errors && controls.phone.touched ) ? 'border-danger ' : '' }}" [formControl]="controls.phone" 
+        mask="(00) 0000-0000||(00) 0 0000-0000"
+        >
+        <!-- -->
+        <div class="text-xs text-rose-700 mt-2" *ngIf="controls.phone.errors && controls.phone.touched">    
+            <div *ngIf="controls.phone.getError('required')">Telefone é obrigatório!</div>
+             <div *ngIf="controls.phone.getError('pattern')">Telefone inválido!</div>
+        </div>
+        <label class="form-label">Grupo</label>
+        <div class="input-group mb-3">
+            <select class="form-control {{ (controls.idGroup.errors && controls.idGroup.touched ) ? 'border-danger ' : '' }}" [formControl]="controls.idGroup">
+                <option *ngFor="let item of groups" [ngValue]="item.id">{{item.name}}</option>
+            </select>
+            <button type="button" class="btn btn-primary" (click)="onShowGroups()">+</button>
+        </div>
+        <div class="text-xs text-rose-700 mt-2" *ngIf="controls.idGroup.errors && controls.idGroup.touched">
+            <div *ngIf="controls.idGroup.getError('required')">Grupo é obrigatório!</div>
+        </div>
+        <br>
+        <button type="button" [disabled]="submitting||!formContact.valid" class="btn btn-success mr-2" (click)="save()"><i class="fas fa-cloud-upload-alt"></i> {{ submitting ? 'Salvando...' : 'Salvar' }}</button>
+        <button type="button" class="btn btn-danger" (click)="clean()"><i class="fas fa-eraser"></i> Limpar</button>
+    </form>
+    <table class="table table-striped my-4  " >
+        <thead>
+            <tr>
+                <th scope="col">Codigo</th>
+                <th scope="col">Nome</th>
+                <th scope="col">Telefone</th>
+                <th scope="col">Grupo</th>
+                <th scope="col">Acao</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let contact of contacts">
+              <td>{{ contact.id | zeroPadding}}</td>
+              <td>{{ contact.name }}</td>
+              <td>{{ contact.phone}}</td>
+              <td>{{ getGroupName(contact.idGroup)}}</td>
+              <td>
+                <button type='button' class=" btn btn-primary ms-2" (click)="editItem(contact.id )"><i class="fas fa-pen"></i></button>
+                <button type='button' class=" btn btn-dark ms-2" (click)="deleteItem(contact.id )"><i class="fas fa-trash"></i></button>
+              </td>
+            </tr>
+          </tbody>
+    </table>
+    <app-grupos *ngIf="showGroups" title="Grupos" [groups]="groups"  (close)="refreshGroups($event)"></app-grupos>
+    <br>
+    <br>
+</div>

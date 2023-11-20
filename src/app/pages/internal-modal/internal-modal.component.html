@@ -1,0 +1,15 @@
+<div class="w-100" style="position: fixed;top:0px;height:100vh;background-color: rgba(0, 0, 0, 0.8);">
+    <div class="w-75 mx-auto mt-4 rounded bg-light" style="min-width: 320px;min-height:320px;">
+        <div class="row p-2 d-flex justify-content-center">
+            <h4 class="pt-2 col-11 text-center">{{title}}</h4  >
+            <div class="col-1 d-flex justify-content-end">
+                <button class="btn btn-danger" (click)="onClose()"><i class="fas fa-times"></i></button>
+            </div>
+        </div>
+        <div class="row p-2 ">
+            <div class="col-12 d-flex justify-content-center">
+                <ng-content></ng-content>
+            </div>
+        </div>
+    </div>
+</div>

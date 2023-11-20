@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  web:
+    build:
+      context: .
+    volumes:
+      - ./app:/app
+    working_dir: /app
+    command: sh -c "pip install cors Flask Flask-CORS mysql-connector-python SQLAlchemy && python app.py"
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: luis@123
+      MYSQL_DATABASE: agenda
+      MYSQL_USER: luis
+      MYSQL_PASSWORD: mypassword
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./bd.sql:/docker-entrypoint-initdb.d/bd.sql
+      - ./init-script.sh:/docker-entrypoint-initdb.d/init-script.sh
